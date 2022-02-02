@@ -1,1 +1,1 @@
-# Temporal Heat Map for Human Occuapancy estimation
+# Temporal Heat Map for Human Occupancy estimation
