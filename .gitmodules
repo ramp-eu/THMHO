@@ -1,0 +1,9 @@
+[submodule "THMHO_heatmap_generator"]
+	path = THMHO_heatmap_generator
+	url = git@github.com:ipa320/THMHO_heatmap_generator.git
+[submodule "THMHO_ngsi_converter_bringup"]
+	path = THMHO_ngsi_converter_bringup
+	url = git@github.com:ipa-rar/THMHO_ngsi_converter_bringup.git
+[submodule "THMHO_dashboard"]
+	path = THMHO_dashboard
+	url = git@github.com:ipa-rar/THMHO_dashboard.git
