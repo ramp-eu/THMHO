@@ -1,0 +1,12 @@
+FROM python:3.8-slim
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y git \
+    && pip install Flask pymongo
+RUN mkdir flaskapp
+WORKDIR flaskapp
+RUN git clone https://github.com/ipa-rar/THMHO_dashboard.git
+WORKDIR flaskapp/THMHO_dashboard/src/flask/
+ENV FLASK_APP=app.py
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
+
