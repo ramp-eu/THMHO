@@ -6,14 +6,14 @@ services:
     network_mode: "host"
     depends_on: 
       - orion
-    image: ragesh18/thmho-heatmap-ngsi
+    image: ragesh18/thmho-heatmap-ngsi:master
     container_name: thmho-heatmap-ngsi
     volumes:
       - ./entrypoint-ngsi.sh:/entrypoint.sh
 
   thmho-ros-server:
     network_mode: "host"
-    image: ragesh18/thmho-heatmap-server
+    image: ragesh18/thmho-heatmap-server:master
     container_name: thmho-heatmap-server
     volumes:
       - ./entrypoint-server.sh:/entrypoint.sh
@@ -29,3 +29,56 @@ services:
     ports:
       - "1026:1026"
     command: -dbhost mongo-orion
+
+  mongo:
+    build:
+      context: .
+      dockerfile: Dockerfile-mongo
+    container_name: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=heatmap
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    image: mongo
+    volumes:
+      - mgstorage:/data/db
+    network_mode: "host"
+
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile-flask
+    container_name: flask
+    environment:
+      - MONGO_INITDB_DATABASE=heatmap
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_COLLECTION=$MONGO_COLLECTION
+      - HEATMAP_WIDTH=$HEATMAP_WIDTH
+      - HEATMAP_HEIGHT=$HEATMAP_HEIGHT
+    image: flask
+    depends_on:
+      - mongo
+    network_mode: "host"
+
+  dash:
+    build:
+      context: .
+      dockerfile: Dockerfile-dash
+    container_name: dash
+    environment:
+      - MONGO_INITDB_DATABASE=heatmap
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_COLLECTION=$MONGO_COLLECTION
+      - HEATMAP_WIDTH=$HEATMAP_WIDTH
+      - HEATMAP_HEIGHT=$HEATMAP_HEIGHT
+    image: dash
+    depends_on:
+      - flask
+    network_mode: "host"
+
+
+volumes:
+  mgstorage:
+    external: true
