@@ -1,4 +1,4 @@
-name: thmho-heatmap-ngsi
+name: thmho-heatmap-mongodb-push
 
 on:
   push:
