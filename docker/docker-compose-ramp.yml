@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+
+  thmho-ros-ngsi:
+    network_mode: "host"
+    depends_on: 
+      - orion
+    image: ragesh18/thmho-heatmap-ngsi:master
+    container_name: thmho-heatmap-ngsi
+    volumes:
+      - ./entrypoint-ngsi.sh:/entrypoint.sh
+
+  thmho-ros-server:
+    network_mode: "host"
+    image: ragesh18/thmho-heatmap-server:master
+    container_name: thmho-heatmap-server
+    volumes:
+      - ./entrypoint-server.sh:/entrypoint.sh
+
+  mongo-orion:
+    image: mongo
+    command: --nojournal
+    
+  orion:
+    image: fiware/orion
+    links:
+      - mongo-orion
+    ports:
+      - "1026:1026"
+    command: -dbhost mongo-orion
+
+volumes:
+  mgstorage:
+    external: true

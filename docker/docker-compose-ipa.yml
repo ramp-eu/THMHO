@@ -2,14 +2,12 @@ version: '3.9'
 
 services:
 
-  thmho-ros-ngsi:
+  thmho-heatmap-mongodb-push:
     network_mode: "host"
-    depends_on: 
-      - orion
-    image: ragesh18/thmho-heatmap-ngsi:master
+    image: ragesh18/thmho-heatmap-mongodb-push:master
     container_name: thmho-heatmap-ngsi
     volumes:
-      - ./entrypoint-ngsi.sh:/entrypoint.sh
+      - ./entrypoint-mongodb-push.sh:/entrypoint.sh
 
   thmho-ros-server:
     network_mode: "host"
@@ -17,18 +15,6 @@ services:
     container_name: thmho-heatmap-server
     volumes:
       - ./entrypoint-server.sh:/entrypoint.sh
-
-  mongo-orion:
-    image: mongo
-    command: --nojournal
-    
-  orion:
-    image: fiware/orion
-    links:
-      - mongo-orion
-    ports:
-      - "1026:1026"
-    command: -dbhost mongo-orion
 
   mongo:
     build:
@@ -41,6 +27,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=admin
     image: mongo
     command: mongod --port 27018
+    network_mode: "host"
     ports:
       - 27018:27018
     volumes:
@@ -59,6 +46,7 @@ services:
       - HEATMAP_WIDTH=$HEATMAP_WIDTH
       - HEATMAP_HEIGHT=$HEATMAP_HEIGHT
     image: flask
+    network_mode: "host"
     ports:
       - 5000:5000
     depends_on:
@@ -77,6 +65,7 @@ services:
       - HEATMAP_WIDTH=$HEATMAP_WIDTH
       - HEATMAP_HEIGHT=$HEATMAP_HEIGHT
     image: dash
+    network_mode: "host"
     ports:
       - 8050:8050
     depends_on:
