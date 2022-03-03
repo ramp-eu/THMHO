@@ -5,7 +5,7 @@ services:
   thmho-heatmap-mongodb-push:
     network_mode: "host"
     image: ragesh18/thmho-heatmap-mongodb-push:master
-    container_name: thmho-heatmap-ngsi
+    container_name: thmho-heatmap-mongodb-push
     volumes:
       - ./entrypoint-mongodb-push.sh:/entrypoint.sh
 
@@ -25,9 +25,7 @@ services:
       - MONGO_INITDB_DATABASE=heatmap
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=admin
-    image: mongo
     command: mongod --port 27018
-    network_mode: "host"
     ports:
       - 27018:27018
     volumes:
@@ -45,8 +43,6 @@ services:
       - MONGO_COLLECTION=$MONGO_COLLECTION
       - HEATMAP_WIDTH=$HEATMAP_WIDTH
       - HEATMAP_HEIGHT=$HEATMAP_HEIGHT
-    image: flask
-    network_mode: "host"
     ports:
       - 5000:5000
     depends_on:
@@ -64,8 +60,6 @@ services:
       - MONGO_COLLECTION=$MONGO_COLLECTION
       - HEATMAP_WIDTH=$HEATMAP_WIDTH
       - HEATMAP_HEIGHT=$HEATMAP_HEIGHT
-    image: dash
-    network_mode: "host"
     ports:
       - 8050:8050
     depends_on:

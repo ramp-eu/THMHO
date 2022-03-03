@@ -25,7 +25,7 @@ RUN echo "Pulling & Compiling THMHO serverside application" \
     && rm -rf /var/lib/apt/lists/*
 
 #RUN echo "source /entrypoint.sh" >> /root/.bashrc
-COPY ./entrypoint-ngsi.sh /entrypoint.sh
+COPY ./entrypoint-mongodb-push.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 #RUN /entrypoint.sh
 
