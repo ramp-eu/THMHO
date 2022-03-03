@@ -14,7 +14,7 @@ ENV CATKIN_WS=/root/server_ws
 RUN mkdir -p $CATKIN_WS/src
 WORKDIR $CATKIN_WS/src
 
-RUN git clone https://github.com/ramp-eu/THMHO_ngsi_converter_bringup.git
+RUN git clone https://github.com/ipa-rar/THMHO_ngsi_converter_bringup.git
     
 WORKDIR $CATKIN_WS
 RUN echo "Pulling & Compiling THMHO serverside application" \
