@@ -3,9 +3,7 @@ version: '3.9'
 services:
 
   mongo:
-    build:
-      context: .
-      dockerfile: Dockerfile-mongo
+    image: ragesh18/mongodb_heatmap:master
     container_name: mongo
     environment:
       - MONGO_INITDB_DATABASE=heatmap
@@ -18,9 +16,7 @@ services:
       - mgstorage:/data/db
       
   flask:
-    build:
-      context: .
-      dockerfile: Dockerfile-flask
+    image: ragesh18/flask_api:master
     container_name: flask
     environment:
       - MONGO_INITDB_DATABASE=heatmap
@@ -35,9 +31,7 @@ services:
       - mongo
 
   dash:
-    build:
-      context: .
-      dockerfile: Dockerfile-dash
+    image: ragesh18/dash_ui:master
     container_name: dash
     environment:
       - MONGO_INITDB_DATABASE=heatmap
